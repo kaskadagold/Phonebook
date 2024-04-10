@@ -1,3 +1,7 @@
+<?php
+include ("functions.php");
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +13,7 @@
 
 <body>
     <header>
-        <a href="index.html">
+        <a href="index.php">
             <h1>Телефонный справочник</h1>
         </a>
     </header>
@@ -18,10 +22,9 @@
         
 
         <h2>Контакт успешно удален!</h2>
-        <a href="index.html">
+        <a href="index.php">
             <button>Вернуться к списку контактов</button>
         </a>
     </main>
-    
 </body>
 </html>
