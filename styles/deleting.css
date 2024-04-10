@@ -1,0 +1,12 @@
+main {
+    display: flex;
+    justify-content:space-between;
+    margin: 40px 15px;
+
+}
+
+h2 {
+    font-size: 2em;
+    margin: 0;
+    font-weight: 300;
+}

@@ -1,0 +1,12 @@
+header {
+    text-align: center;
+}
+
+a:link, a:visited {
+    text-decoration: none;
+    color: black;
+}
+
+h1 {
+    font-size: 40px;
+}
