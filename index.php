@@ -14,7 +14,7 @@ require_once "ContactRepository.php";
 
 <body>
     <header>
-        <a href="index.html">
+        <a href="index.php">
             <h1>Телефонный справочник</h1>
         </a>
     </header>

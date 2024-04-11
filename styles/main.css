@@ -15,28 +15,31 @@ p {
     font-size: 18px;
 }
 
+table {
+    width: 100%;
+    margin: 0 5px;
+}
+
 table, th, td {
     border-bottom: 1px solid;
     border-collapse: collapse;
-    width: 100%;
-}
-
-.nameField, .phoneField {
-    min-width: 300px;
 }
 
 td, th {
     padding: 5px 10px;
-    text-align: start;
-    width: 50%;
 }
 
 th {
-    font-size: 24px;
+    font-size: 1.5em;
+    text-align: start;
 }
 
 td {
     font-size: 20px;
+}
+
+.nameField, .phoneField {
+    width: 50%;
 }
 
 .deleteButton {
@@ -51,13 +54,13 @@ td {
     align-items: center;
     background-color: white;
     transition: background-color 0.3s;
+    padding: 0;
 }
 
 img {
-    width: 30px;
+    width: 65%;
 
 }
-
 
 .imageButton:hover {
     background-color: rgba(0, 0, 0, 0.1);
