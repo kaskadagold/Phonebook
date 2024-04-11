@@ -3,6 +3,7 @@ class contactRepository {
     public $jsonData;
     public $data;
     public $dataFile;
+    public $id;
     public function getList() {
 
         $this->dataFile = fopen("data.json", "r");
@@ -23,20 +24,27 @@ class contactRepository {
     }
 
     public function addContact($name, $phone) {
-        array_push($this->data, ['name'=> $name,'phone'=> $phone]);
+
+        $this->id = array_key_last($this->data) + 1;
+        $this->data[$this->id] = ['name'=> $name,'phone'=> $phone, 'id' => $this->id];
+
         $this->jsonData = json_encode($this->data);
         $this->dataFile = fopen('data.json', "w");
         fwrite($this->dataFile, $this->jsonData);
         fclose($this->dataFile);
+
         header(header: ('Location: /'));
     }
 
     public function deleteContact($id) {
+
         unset($this->data[$id]);
+
         $this->jsonData = json_encode($this->data);
         $this->dataFile = fopen('data.json', "w");
         fwrite($this->dataFile, $this->jsonData);
         fclose($this->dataFile);
+
         header(header: ('Location: /'));
     }
 }

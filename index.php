@@ -40,8 +40,8 @@ require_once "functions.php";
 
                     <?php 
                     $baseUrlForDelete = "deleting.php";
-                    foreach ($contactsList as $id => $contact) {
-                        $currentUrlForDelete = $baseUrlForDelete . "?id={$id}";
+                    foreach ($contactsList as $contact) {
+                        $currentUrlForDelete = $baseUrlForDelete . "?id={$contact["id"]}";
                     ?>
                         <tr>
                             <td class="deleteButton">
