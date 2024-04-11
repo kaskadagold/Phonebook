@@ -18,6 +18,7 @@ p {
 table, th, td {
     border-bottom: 1px solid;
     border-collapse: collapse;
+    width: 100%;
 }
 
 .nameField, .phoneField {
@@ -26,11 +27,12 @@ table, th, td {
 
 td, th {
     padding: 5px 10px;
+    text-align: start;
+    width: 50%;
 }
 
 th {
-    font-size: 1.5em;
-    text-align: start;
+    font-size: 24px;
 }
 
 td {
@@ -39,7 +41,6 @@ td {
 
 .deleteButton {
     width: 50px;
-    text-align: end;
 }
 
 .imageButton {

@@ -1,9 +1,10 @@
 <?php
-require_once "functions.php";
+require_once "mainController.php";
+require_once "ContactRepository.php";
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
     <title>Телефонный справочник</title>
     <link rel="stylesheet" href="styles/main.css">
@@ -33,7 +34,7 @@ require_once "functions.php";
             <?php } else { ?>
                 <table>
                     <tr>
-                        <th></th>
+                        <th class="deleteButton"></th>
                         <th class="nameField">Имя</th>
                         <th class="phoneField">Телефон</th>
                     <tr>
@@ -41,7 +42,7 @@ require_once "functions.php";
                     <?php 
                     $baseUrlForDelete = "deleting.php";
                     foreach ($contactsList as $contact) {
-                        $currentUrlForDelete = $baseUrlForDelete . "?id={$contact["id"]}";
+                        $currentUrlForDelete = $baseUrlForDelete . "?id={$contact->id}";
                     ?>
                         <tr>
                             <td class="deleteButton">
@@ -51,8 +52,8 @@ require_once "functions.php";
                                     </button>
                                 </a>
                             </td>
-                            <td class="nameField"><?php echo($contact["name"]) ?></td>
-                            <td class="phoneField"><?php echo($contact["phone"]) ?></td>
+                            <td class="nameField"><?php echo($contact->name) ?></td>
+                            <td class="phoneField"><?php echo($contact->phone) ?></td>
                         </tr>
                     <?php } ?>
                 </table>
