@@ -1,5 +1,5 @@
 <?php
-include ("functions.php");
+require_once "functions.php";
 ?>
 
 <!DOCTYPE html>
@@ -47,7 +47,7 @@ include ("functions.php");
                             <td class="deleteButton">
                                 <a href=<?php echo $currentUrlForDelete; ?>>
                                     <button class="imageButton">
-                                        <img src="styles/recycle-bin.png">
+                                        <img src="styles/recycle-bin.png" alt="Удалить" title="Удалить">
                                     </button>
                                 </a>
                             </td>
@@ -58,7 +58,6 @@ include ("functions.php");
                 </table>
             <?php } ?>
         </div>
-
     </main>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <?php
-include ("functions.php");
+require_once "functions.php";
 ?>
 
 <!DOCTYPE html>
@@ -27,11 +27,13 @@ include ("functions.php");
             </a>
         </div>
 
-        <form action="" method="get">
+        <form action="" method="post">
             <label for="contactName">Имя: </label>
-            <input type="text" placeholder="Name" name="contactName">
+            <input type="text" placeholder="Name" name="contactName" required>
+
             <label for="contactPhone">Телефон: </label>
-            <input type="tel" placeholder="+7-9xx-xxx-xx-xx" name="contactPhone">
+            <input type="tel" placeholder="xxx-xxx-xx-xx" name="contactPhone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}" title="xxx-xxx-xx-xx" required>
+
             <input type="submit" name="addButton" value="Добавить">
         </form>
     </main>

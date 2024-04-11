@@ -1,5 +1,5 @@
 <?php
-include ("functions.php");
+require_once "functions.php";
 ?>
 
 <!DOCTYPE html>
@@ -19,9 +19,8 @@ include ("functions.php");
     </header>
 
     <main>
-        
-
         <h2>Контакт успешно удален!</h2>
+
         <a href="index.php">
             <button>Вернуться к списку контактов</button>
         </a>

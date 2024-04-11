@@ -28,6 +28,7 @@ class contactRepository {
         $this->dataFile = fopen('data.json', "w");
         fwrite($this->dataFile, $this->jsonData);
         fclose($this->dataFile);
+        header(header: ('Location: /'));
     }
 
     public function deleteContact($id) {
@@ -36,15 +37,16 @@ class contactRepository {
         $this->dataFile = fopen('data.json', "w");
         fwrite($this->dataFile, $this->jsonData);
         fclose($this->dataFile);
+        header(header: ('Location: /'));
     }
 }
 
 $contacts = new contactRepository();
 $contactsList = $contacts->getList();
 
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    $newContactName = $_GET["contactName"] ?? null;
-    $newContactPhone = $_GET["contactPhone"] ?? null;
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $newContactName = $_POST["contactName"] ?? null;
+    $newContactPhone = $_POST["contactPhone"] ?? null;
 }
 
 if (isset($newContactName) && isset($newContactPhone)) {
@@ -55,6 +57,6 @@ $url = explode('?', $_SERVER['REQUEST_URI']);
 $url = $url[0];
 
 if ($url == '/deleting.php') {
-    $id = explode('=', $_SERVER['QUERY_STRING'])[1];
+    $id = $_GET['id'];
     $contacts->deleteContact($id);
 }
