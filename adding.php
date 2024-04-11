@@ -1,9 +1,10 @@
 <?php
-require_once "functions.php";
+require_once "mainController.php";
+require_once "ContactRepository.php";
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
     <title>Добавление контакта</title>
     <link rel="stylesheet" href="styles/adding.css">
