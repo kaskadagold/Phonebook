@@ -1,0 +1,21 @@
+{
+    "name": "olga/phonebook",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Olga Kupreeva",
+            "email": "kaskadagold@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/var-dumper": "^6.4",
+        "symfony/http-foundation": "^6.4",
+        "illuminate/container": "^10.48",
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
