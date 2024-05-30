@@ -20,6 +20,9 @@ $router->get('/', [PagesController::class, 'home']);
 $router->get('/create', [PagesController::class, 'create']);
 $router->post('/create', [PagesController::class, 'submitCreate']);
 
+$router->get('/update/*', [PagesController::class, 'update']);
+$router->post('/update/*', [PagesController::class, 'submitUpdate']);
+
 $router->post('/delete/*', [PagesController::class, 'delete']);
 
 $application = new Application($router);

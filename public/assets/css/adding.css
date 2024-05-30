@@ -7,10 +7,10 @@ h2 {
 .titleBack {
     display: flex;
     justify-content: space-between;
-    margin: 40px 15px;
+    margin: 40px 15px 10px;
 }
 
-form {
+.creationForm {
     padding: 15px;
 }
 

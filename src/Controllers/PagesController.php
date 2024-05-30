@@ -41,6 +41,25 @@ class PagesController extends Controller
         return new RedirectResponse($redirectUrl);
     }
 
+    public function update(int $id): Response
+    {
+        $contact = $this->contactsRepository->getById($id);
+        return $this->view('pages/update.php', ['contact' => $contact]);
+    }
+
+    public function submitUpdate(int $id): Response
+    {
+        $redirectUrl = static::REDIRECT_URL;
+
+        $fields = $this->request->request;
+        $name = $fields->get('contactName', '');
+        $phone = $fields->get('contactPhone', '');
+
+        $this->contactsRepository->update($id, $name, $phone);
+
+        return new RedirectResponse($redirectUrl);
+    }
+
     public function delete(string $id): Response
     {
         $redirectUrl = static::REDIRECT_URL;

@@ -48,6 +48,19 @@ class ContactsRepository implements ContactsRepositoryContract
         fclose($dataFile);
     }
 
+    public function update(int $id, string $name, string $phone): void
+    {
+        $data = $this->getContacts();
+
+        $data[$id]->name = $name;
+        $data[$id]->phone = $phone;
+
+        $jsonData = json_encode($data);
+        $dataFile = fopen(APP_DIR . '/data/data.json', 'w');
+        fwrite($dataFile, $jsonData);
+        fclose($dataFile);
+    }
+
     public function delete(int $id): void 
     {
         $data = $this->getContacts();
@@ -58,5 +71,27 @@ class ContactsRepository implements ContactsRepositoryContract
         $dataFile = fopen(APP_DIR . '/data/data.json', 'w');
         fwrite($dataFile, $jsonData);
         fclose($dataFile);
+    }
+
+    public function getById(int $id): ?Contact
+    {
+        $dataFile = fopen(APP_DIR . '/data/data.json', 'r');
+        $data = null;
+
+        if (filesize(APP_DIR . '/data/data.json')) 
+        {
+            $jsonData = fread($dataFile, filesize(APP_DIR . '/data/data.json'));
+        
+            if ($jsonData) {
+                $dataTemp = json_decode($jsonData, true);
+                if (isset($dataTemp[$id])) {
+                    $data = new Contact($dataTemp[$id]['name'], $dataTemp[$id]['phone'], $id);
+                }
+                
+            }
+        }
+        fclose($dataFile);
+
+        return $data;
     }
 }
