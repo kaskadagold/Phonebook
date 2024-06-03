@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Models\Contact;
 use App\Contracts\Repositories\ContactsRepositoryContract;
 
-class ContactsRepository implements ContactsRepositoryContract
+class ContactsRepositoryJSON implements ContactsRepositoryContract
 {
     public function getContacts(): array 
     {
@@ -42,10 +42,7 @@ class ContactsRepository implements ContactsRepositoryContract
         $id = array_key_last($data) + 1;
         $data[$id] = new Contact($name, $phone, $id);
 
-        $jsonData = json_encode($data);
-        $dataFile = fopen(APP_DIR . '/data/data.json', 'w');
-        fwrite($dataFile, $jsonData);
-        fclose($dataFile);
+        $this->writeToFile($data);
     }
 
     public function update(int $id, string $name, string $phone): void
@@ -55,22 +52,22 @@ class ContactsRepository implements ContactsRepositoryContract
         $data[$id]->name = $name;
         $data[$id]->phone = $phone;
 
-        $jsonData = json_encode($data);
-        $dataFile = fopen(APP_DIR . '/data/data.json', 'w');
-        fwrite($dataFile, $jsonData);
-        fclose($dataFile);
+        $this->writeToFile($data);
     }
 
-    public function delete(int $id): void 
+    public function delete(int $id): bool
     {
         $data = $this->getContacts();
-        
-        unset($data[$id]);
 
-        $jsonData = json_encode($data);
-        $dataFile = fopen(APP_DIR . '/data/data.json', 'w');
-        fwrite($dataFile, $jsonData);
-        fclose($dataFile);
+        if (isset($data[$id])) {
+            unset($data[$id]);
+
+            $this->writeToFile($data);
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function getById(int $id): ?Contact
@@ -93,5 +90,13 @@ class ContactsRepository implements ContactsRepositoryContract
         fclose($dataFile);
 
         return $data;
+    }
+
+    private function writeToFile(array $data): void
+    {
+        $jsonData = json_encode($data);
+        $dataFile = fopen(APP_DIR . '/data/data.json', 'w');
+        fwrite($dataFile, $jsonData);
+        fclose($dataFile);
     }
 }

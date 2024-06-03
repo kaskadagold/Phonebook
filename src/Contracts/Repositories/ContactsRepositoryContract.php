@@ -10,7 +10,7 @@ interface ContactsRepositoryContract
 
     public function create(string $name, string $phone): void;
 
-    public function delete(int $id): void;
+    public function delete(int $id): bool;
 
     public function getById(int $id): ?Contact;
 
