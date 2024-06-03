@@ -65,3 +65,26 @@ img {
 .imageButton:hover {
     background-color: rgba(0, 0, 0, 0.1);
 }
+
+.error {
+    background-color: rgb(255, 59, 59);
+    color: white;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    width: fit-content;
+    border-radius: 10px;
+}
+
+.success {
+    background-color: rgb(79, 138, 79);
+    color: white;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    width: fit-content;
+    border-radius: 10px;
+}
+
+.flashMessage {
+    margin: 0;
+    font-size: 1.2em;
+}
