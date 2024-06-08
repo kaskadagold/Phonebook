@@ -1,12 +1,12 @@
 <?php
 /** 
- * @var int $code
  * @var string $message
+ * @var int $code
  */
 
 use App\View;
 
-View::includeTemplate('layout/header.php', [
+View::includeTemplate('layouts/header.php', [
     'pageTitle' => 'Телефонный справочник - Возникла ошибка',
     'headerTitle' => $code . ' - Возникла ошибка',
 ]);
@@ -15,4 +15,4 @@ View::includeTemplate('layout/header.php', [
 <p><?= htmlspecialchars($message) ?></p>
 
 <?php
-View::includeTemplate('layout/footer.php');
+View::includeTemplate('layouts/footer.php');

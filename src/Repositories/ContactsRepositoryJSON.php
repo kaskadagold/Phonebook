@@ -35,7 +35,7 @@ class ContactsRepositoryJSON implements ContactsRepositoryContract
         return $data;
     }
 
-    public function create(string $name, string $phone): void 
+    public function create(string $name, string $phone): void
     {
         $data = $this->getContacts();
 
