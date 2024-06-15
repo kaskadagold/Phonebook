@@ -24,9 +24,9 @@ class ContactsRepositoryJSON implements ContactsRepositoryContract
         
         $data = [];
         foreach ($dataTemp as $key => $value) {
-            $name = $value['name'] ?? null;
-            $phone = $value['phone'] ?? null;
-            $id = $value['id'] ?? null;
+            $name = $value['name'];
+            $phone = $value['phone'];
+            $id = $value['id'];
             $person = new Contact($name, $phone, $id);
             $data[$key] = $person;
         }
@@ -39,7 +39,7 @@ class ContactsRepositoryJSON implements ContactsRepositoryContract
     {
         $data = $this->getContacts();
 
-        $check = $this->checkPresense($data, $name, $phone);
+        $check = $this->checkPresense($data, null, $name, $phone);
         $created = false;
 
         if (! $check) {
@@ -58,7 +58,7 @@ class ContactsRepositoryJSON implements ContactsRepositoryContract
     {
         $data = $this->getContacts();
 
-        $check = $this->checkPresense($data, $name, $phone);
+        $check = $this->checkPresense($data, $id, $name, $phone);
         $updated = false;
 
         if (! $check) {
@@ -93,7 +93,7 @@ class ContactsRepositoryJSON implements ContactsRepositoryContract
         $dataFile = fopen(APP_DIR . '/data/data.json', 'r');
         $data = null;
 
-        if (filesize(APP_DIR . '/data/data.json')) 
+        if (filesize(APP_DIR . '/data/data.json'))
         {
             $jsonData = fread($dataFile, filesize(APP_DIR . '/data/data.json'));
         
@@ -118,10 +118,10 @@ class ContactsRepositoryJSON implements ContactsRepositoryContract
         fclose($dataFile);
     }
 
-    private function checkPresense(array $data, string $name, string $phone): bool
+    private function checkPresense(array $data, ?int $id, string $name, string $phone): bool
     {
         foreach ($data as $item) {
-            if ($item['name'] === $name && $item['phone'] === $phone) {
+            if ($item->name === $name && $item->phone === $phone && $item->id !== $id) {
                 return true;
             }
         }

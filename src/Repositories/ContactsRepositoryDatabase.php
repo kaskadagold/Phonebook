@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Contracts\Repositories\ContactsRepositoryContract;
 use App\Models\Contact;
+use PDO;
 
 class ContactsRepositoryDatabase implements ContactsRepositoryContract
 {
@@ -18,10 +19,11 @@ class ContactsRepositoryDatabase implements ContactsRepositoryContract
         );
         $query->execute();
 
+        $query->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, Contact::class, ['', '', -1]);
         $result = [];
-        while ($temp = $query->fetch(\PDO::FETCH_ASSOC)) {
-            $contact = new Contact($temp['name'], $temp['phone'], $temp['id']);
-            $result[] = $contact;
+
+        while ($temp = $query->fetch()) {
+            $result[] = $temp;
         }
 
         return $result;
@@ -31,7 +33,7 @@ class ContactsRepositoryDatabase implements ContactsRepositoryContract
     {
         $connection = database()->connect();
 
-        $check = $this->checkPresense($connection, $name, $phone);
+        $check = $this->checkPresense($connection, null, $name, $phone);
         $created = false;
 
         if (! $check) {
@@ -77,7 +79,7 @@ class ContactsRepositoryDatabase implements ContactsRepositoryContract
         $query->execute();
 
         $contact = null;
-        $query->setFetchMode(\PDO::FETCH_CLASS|\PDO::FETCH_PROPS_LATE, Contact::class, ['', '', -1]);
+        $query->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, Contact::class, ['', '', -1]);
 
         if ($temp = $query->fetch()) {
             $contact = $temp;
@@ -90,7 +92,7 @@ class ContactsRepositoryDatabase implements ContactsRepositoryContract
     {
         $connection = database()->connect();
 
-        $check = $this->checkPresense($connection, $name, $phone);
+        $check = $this->checkPresense($connection, $id, $name, $phone);
         $updated = false;
 
         if (! $check) {
@@ -110,15 +112,16 @@ class ContactsRepositoryDatabase implements ContactsRepositoryContract
         return $updated;
     }
 
-    private function checkPresense(\PDO $connection, string $name, string $phone): bool
+    private function checkPresense(PDO $connection, ?int $id, string $name, string $phone): bool
     {
         $query = $connection->prepare(
             'SELECT `id`
             FROM `contacts`
-            WHERE `name` = :name AND `phone` = :phone'
+            WHERE `name` = :name AND `phone` = :phone AND `id` != :id'
         );
         $query->bindParam(':name', $name);
         $query->bindParam(':phone', $phone);
+        $query->bindParam(':id', $id);
 
         $query->execute();
 

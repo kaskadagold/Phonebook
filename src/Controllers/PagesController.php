@@ -50,7 +50,7 @@ class PagesController extends Controller
         } catch (PageNotFoundException $e) {
             flash()->error([$e->getMessage()]);
         } catch (Exception $e) {
-            flash()->error(['Такой контакт уже существует']);
+            flash()->error(['Контакт с таким именем и телефоном уже существует']);
             return new RedirectResponse($_SERVER['REQUEST_URI']);
         }
 
@@ -60,6 +60,8 @@ class PagesController extends Controller
     /** @throws Exception */
     public function update(int $id): Response
     {
+        $redirectUrl = static::REDIRECT_URL;
+
         try {
             $contact = $this->contactsRepository->getById($id);
 
@@ -68,7 +70,7 @@ class PagesController extends Controller
             }
         } catch (Exception $e) {
             flash()->error(['Невозможно отредактировать несуществующий контакт']);
-            return new RedirectResponse(static::REDIRECT_URL);
+            return new RedirectResponse($redirectUrl);
         }
         
         return $this->view('pages/update.php', ['contact' => $contact]);
@@ -92,7 +94,7 @@ class PagesController extends Controller
 
             flash()->success(['Вы успешно обновили контакт']);
         } catch (Exception $e) {
-            flash()->error(['Такой контакт уже существует']);
+            flash()->error(['Контакт с таким именем и телефоном уже существует']);
             return new RedirectResponse($_SERVER['REQUEST_URI']);
         }
         
@@ -114,7 +116,6 @@ class PagesController extends Controller
             flash()->success(['Вы успешно удалили контакт']);
         } catch (Exception $e) {
             flash()->error(['Невозможно удалить несуществущий контакт']);
-            return new RedirectResponse($redirectUrl);
         }
 
         return new RedirectResponse($redirectUrl);

@@ -2,8 +2,6 @@
 
 namespace App;
 
-use App\Models\Contact;
-
 class Database
 {
     public function connect(): \PDO
