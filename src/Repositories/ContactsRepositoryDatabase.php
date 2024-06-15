@@ -27,17 +27,26 @@ class ContactsRepositoryDatabase implements ContactsRepositoryContract
         return $result;
     }
 
-    public function create(string $name, string $phone): void
+    public function create(string $name, string $phone): bool
     {
         $connection = database()->connect();
 
-        $query = $connection->prepare(
-            'INSERT INTO `contacts` (`name`, `phone`)
-            VALUES (:name, :phone)'
-        );
-        $query->bindParam(':name', $name);
-        $query->bindParam(':phone', $phone);
-        $query->execute();
+        $check = $this->checkPresense($connection, $name, $phone);
+        $created = false;
+
+        if (! $check) {
+            $query = $connection->prepare(
+                'INSERT INTO `contacts` (`name`, `phone`)
+                VALUES (:name, :phone)'
+            );
+            $query->bindParam(':name', $name);
+            $query->bindParam(':phone', $phone);
+            $query->execute();
+
+            $created = true;
+        }
+
+        return $created;
     }
 
     public function delete(int $id): bool
@@ -68,26 +77,51 @@ class ContactsRepositoryDatabase implements ContactsRepositoryContract
         $query->execute();
 
         $contact = null;
+        $query->setFetchMode(\PDO::FETCH_CLASS|\PDO::FETCH_PROPS_LATE, Contact::class, ['', '', -1]);
 
-        if ($temp = $query->fetch(\PDO::FETCH_ASSOC)) {
-            $contact = new Contact($temp['name'], $temp['phone'], $id);
+        if ($temp = $query->fetch()) {
+            $contact = $temp;
         }
 
         return $contact;
     }
 
-    public function update(int $id, string $name, string $phone): void
+    public function update(int $id, string $name, string $phone): bool
     {
         $connection = database()->connect();
 
+        $check = $this->checkPresense($connection, $name, $phone);
+        $updated = false;
+
+        if (! $check) {
+            $query = $connection->prepare(
+                'UPDATE `contacts`
+                SET `name` = :name, `phone` = :phone
+                WHERE `id` = :id'
+            );
+            $query->bindParam(':name', $name);
+            $query->bindParam(':phone', $phone);
+            $query->bindParam(':id', $id);
+            $query->execute();
+
+            $updated = true;
+        }
+
+        return $updated;
+    }
+
+    private function checkPresense(\PDO $connection, string $name, string $phone): bool
+    {
         $query = $connection->prepare(
-            'UPDATE `contacts`
-            SET `name` = :name, `phone` = :phone
-            WHERE `id` = :id'
+            'SELECT `id`
+            FROM `contacts`
+            WHERE `name` = :name AND `phone` = :phone'
         );
         $query->bindParam(':name', $name);
         $query->bindParam(':phone', $phone);
-        $query->bindParam(':id', $id);
+
         $query->execute();
+
+        return $query->fetch() ? true : false;
     }
 }

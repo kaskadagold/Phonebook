@@ -37,7 +37,10 @@ class Application
             );
         } catch (Exception $exception) {
             return new Response(
-                (new View('errors/error.php'))->render(['message' => $exception->getMessage(), 'code' => 500]),
+                (new View('errors/error.php'))->render([
+                    'message' => $exception->getMessage(),
+                    'code' => 500,
+                ]),
                 500,
             );
         }
