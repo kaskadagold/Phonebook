@@ -30,7 +30,7 @@ class PagesController extends Controller
         return $this->view('pages/create.php');
     }
 
-    /** @throws PageNotFoundException */
+    /** @throws PageNotFoundException | Exception */
     public function submitCreate(): Response
     {
         $redirectUrl = static::REDIRECT_URL;
@@ -40,11 +40,18 @@ class PagesController extends Controller
         $phone = $this->validateData($fields->get('contactPhone', ''));
 
         try {
-            $this->contactsRepository->create($name, $phone);
+            $result = $this->contactsRepository->create($name, $phone);
+
+            if (! $result) {
+                throw new Exception;
+            }
 
             flash()->success('Вы успешно добавили новый контакт');
         } catch (PageNotFoundException $e) {
             flash()->error([$e->getMessage()]);
+        } catch (Exception $e) {
+            flash()->error(['Контакт с таким именем и телефоном уже существует']);
+            return new RedirectResponse($_SERVER['REQUEST_URI']);
         }
 
         return new RedirectResponse($redirectUrl);
@@ -53,6 +60,8 @@ class PagesController extends Controller
     /** @throws Exception */
     public function update(int $id): Response
     {
+        $redirectUrl = static::REDIRECT_URL;
+
         try {
             $contact = $this->contactsRepository->getById($id);
 
@@ -61,12 +70,13 @@ class PagesController extends Controller
             }
         } catch (Exception $e) {
             flash()->error(['Невозможно отредактировать несуществующий контакт']);
-            return new RedirectResponse(static::REDIRECT_URL);
+            return new RedirectResponse($redirectUrl);
         }
         
         return $this->view('pages/update.php', ['contact' => $contact]);
     }
 
+    /** @throws Exception */
     public function submitUpdate(int $id): Response
     {
         $redirectUrl = static::REDIRECT_URL;
@@ -75,9 +85,19 @@ class PagesController extends Controller
         $name = $this->validateData($fields->get('contactName', ''));
         $phone = $this->validateData($fields->get('contactPhone', ''));
 
-        $this->contactsRepository->update($id, $name, $phone);
+        try {
+            $result = $this->contactsRepository->update($id, $name, $phone);
 
-        flash()->success(['Вы успешно обновили контакт']);
+            if (! $result) {
+                throw new Exception;
+            }
+
+            flash()->success(['Вы успешно обновили контакт']);
+        } catch (Exception $e) {
+            flash()->error(['Контакт с таким именем и телефоном уже существует']);
+            return new RedirectResponse($_SERVER['REQUEST_URI']);
+        }
+        
 
         return new RedirectResponse($redirectUrl);
     }
@@ -96,7 +116,6 @@ class PagesController extends Controller
             flash()->success(['Вы успешно удалили контакт']);
         } catch (Exception $e) {
             flash()->error(['Невозможно удалить несуществущий контакт']);
-            return new RedirectResponse($redirectUrl);
         }
 
         return new RedirectResponse($redirectUrl);

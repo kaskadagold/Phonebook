@@ -20,6 +20,7 @@ class Application
     {
         try {
             container()->instance(Request::class, $request);
+
             return $this->router->run($request);
         } catch (PageNotFoundException $exception) {
             return new Response(
@@ -36,7 +37,10 @@ class Application
             );
         } catch (Exception $exception) {
             return new Response(
-                (new View('errors/error.php'))->render(['message' => $exception->getMessage()]),
+                (new View('errors/error.php'))->render([
+                    'message' => $exception->getMessage(),
+                    'code' => 500,
+                ]),
                 500,
             );
         }

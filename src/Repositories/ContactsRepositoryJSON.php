@@ -24,9 +24,9 @@ class ContactsRepositoryJSON implements ContactsRepositoryContract
         
         $data = [];
         foreach ($dataTemp as $key => $value) {
-            $name = $value['name'] ?? null;
-            $phone = $value['phone'] ?? null;
-            $id = $value['id'] ?? null;
+            $name = $value['name'];
+            $phone = $value['phone'];
+            $id = $value['id'];
             $person = new Contact($name, $phone, $id);
             $data[$key] = $person;
         }
@@ -35,24 +35,42 @@ class ContactsRepositoryJSON implements ContactsRepositoryContract
         return $data;
     }
 
-    public function create(string $name, string $phone): void 
+    public function create(string $name, string $phone): bool
     {
         $data = $this->getContacts();
 
-        $id = array_key_last($data) + 1;
-        $data[$id] = new Contact($name, $phone, $id);
+        $check = $this->checkPresense($data, null, $name, $phone);
+        $created = false;
 
-        $this->writeToFile($data);
+        if (! $check) {
+            $id = array_key_last($data) + 1;
+            $data[$id] = new Contact($name, $phone, $id);
+
+            $this->writeToFile($data);
+
+            $created = true;
+        }
+
+        return $created;
     }
 
-    public function update(int $id, string $name, string $phone): void
+    public function update(int $id, string $name, string $phone): bool
     {
         $data = $this->getContacts();
 
-        $data[$id]->name = $name;
-        $data[$id]->phone = $phone;
+        $check = $this->checkPresense($data, $id, $name, $phone);
+        $updated = false;
 
-        $this->writeToFile($data);
+        if (! $check) {
+            $data[$id]->name = $name;
+            $data[$id]->phone = $phone;
+
+            $this->writeToFile($data);
+
+            $updated = true;
+        }
+
+        return $updated;
     }
 
     public function delete(int $id): bool
@@ -75,7 +93,7 @@ class ContactsRepositoryJSON implements ContactsRepositoryContract
         $dataFile = fopen(APP_DIR . '/data/data.json', 'r');
         $data = null;
 
-        if (filesize(APP_DIR . '/data/data.json')) 
+        if (filesize(APP_DIR . '/data/data.json'))
         {
             $jsonData = fread($dataFile, filesize(APP_DIR . '/data/data.json'));
         
@@ -98,5 +116,16 @@ class ContactsRepositoryJSON implements ContactsRepositoryContract
         $dataFile = fopen(APP_DIR . '/data/data.json', 'w');
         fwrite($dataFile, $jsonData);
         fclose($dataFile);
+    }
+
+    private function checkPresense(array $data, ?int $id, string $name, string $phone): bool
+    {
+        foreach ($data as $item) {
+            if ($item->name === $name && $item->phone === $phone && $item->id !== $id) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
