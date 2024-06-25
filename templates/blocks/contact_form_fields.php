@@ -1,11 +1,8 @@
 <?php
 /**
- * @var ?string $contactName
- * @var ?string $contactPhone
+ * @var string $contactName
+ * @var string $contactPhone
  */
-
-$contactName ??= '';
-$contactPhone ??= '';
 ?>
 
 <div>

@@ -1,4 +1,6 @@
 <?php
+/** @var array $contactsList */
+
 use App\View;
 
 View::includeTemplate('layouts/header.php');
