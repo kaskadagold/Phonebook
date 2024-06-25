@@ -114,14 +114,26 @@ class ContactsRepositoryDatabase implements ContactsRepositoryContract
 
     private function checkPresense(PDO $connection, ?int $id, string $name, string $phone): bool
     {
-        $query = $connection->prepare(
-            'SELECT `id`
+        $sql = 'SELECT `id`
             FROM `contacts`
-            WHERE `name` = :name AND `phone` = :phone AND `id` != :id'
-        );
+            WHERE `name` = :name AND `phone` = :phone';
+        $sqlWhereId = ' AND `id` != :id';
+
+        if ($id === null) {
+            $query = $connection->prepare($sql);
+        } else {
+            $query = $connection->prepare($sql . $sqlWhereId);
+            $query->bindParam(':id', $id);
+        }
+
+        // $query = $connection->prepare(
+        //     'SELECT `id`
+        //     FROM `contacts`
+        //     WHERE `name` = :name AND `phone` = :phone AND `id` != :id'
+        // );
+
         $query->bindParam(':name', $name);
         $query->bindParam(':phone', $phone);
-        $query->bindParam(':id', $id);
 
         $query->execute();
 

@@ -35,4 +35,9 @@ class FlashMessages
     {
         return $this->session->getFlashBag();
     }
+
+    public function getFlashBag(): FlashBagInterface
+    {
+        return $this->session->getFlashBag();
+    }
 }

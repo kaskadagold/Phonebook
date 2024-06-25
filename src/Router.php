@@ -8,7 +8,7 @@ use App\Exceptions\PageNotFoundException;
 
 class Router
 {
-    /** @var array|Router[] */
+    /** @var array|Route[] */
     private array $routes = [];
 
     public function register(string $url, string $method, array $callback): void

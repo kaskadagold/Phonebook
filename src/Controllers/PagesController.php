@@ -27,7 +27,8 @@ class PagesController extends Controller
 
     public function create(): Response
     {
-        return $this->view('pages/create.php');
+        $oldValues = flash()->getFlashBag()->get('old', []);
+        return $this->view('pages/create.php', ['fields' => $oldValues]);
     }
 
     /** @throws PageNotFoundException | Exception */
@@ -50,6 +51,7 @@ class PagesController extends Controller
         } catch (PageNotFoundException $e) {
             flash()->error([$e->getMessage()]);
         } catch (Exception $e) {
+            flash()->getFlashBag()->set('old', $fields->all());
             flash()->error(['Контакт с таким именем и телефоном уже существует']);
             return new RedirectResponse($_SERVER['REQUEST_URI']);
         }
