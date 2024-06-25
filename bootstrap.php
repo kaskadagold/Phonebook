@@ -35,9 +35,9 @@ container()->singleton(Config::class, function () {
 /** 
  * Choose a suitable repository implementation to store data
  */
-if (config()->get('storage')['type'] === 'json') {
+if (config()->get('storage.type') === 'json') {
     container()->singleton(ContactsRepositoryContract::class, ContactsRepositoryJSON::class);
-} elseif (config()->get('storage')['type'] === 'database') {
+} elseif (config()->get('storage.type') === 'database') {
     container()->singleton(ContactsRepositoryContract::class, ContactsRepositoryDatabase::class);
 }
 

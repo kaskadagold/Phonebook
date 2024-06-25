@@ -1,5 +1,10 @@
 <?php
+/** @var array $fields */
+
 use App\View;
+
+$contactName = $fields['contactName'] ?? '';
+$contactPhone = $fields['contactPhone'] ?? '';
 
 View::includeTemplate('layouts/header.php', ['pageTitle' => 'Добавление контакта']);
 ?>
@@ -14,7 +19,7 @@ View::includeTemplate('layouts/header.php', ['pageTitle' => 'Добавлени�
 
 <div class="creationForm">
     <form action="/create" method="post">
-        <?php View::includeTemplate('blocks/contact_form_fields.php') ?>
+        <?php View::includeTemplate('blocks/contact_form_fields.php', ['contactName' => $contactName, 'contactPhone' => $contactPhone]) ?>
 
         <input type="submit" name="addButton" value="Добавить">
     </form>

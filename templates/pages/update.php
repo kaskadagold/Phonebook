@@ -1,4 +1,6 @@
 <?php
+/** @var \App\Models\Contact $contact */
+
 use App\View;
 
 View::includeTemplate('layouts/header.php', ['pageTitle' => 'Редактирование контакта']);
